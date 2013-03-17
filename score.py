@@ -5,67 +5,74 @@ KEYWORDS = {
     'tqec': 20,
     'ftqc': 20,
     'ftqec': 20,
-    'fault': 5,
-    'tolerant': 15,
-    'fault-tolerant': 15,
-    'error': 5, 
-    'correction': 10,
-    'surface': 7,
-    'code': 15, 
-    'codes': 15,
-    'circuits': 15,
-    'computing': 15, 
+    'fault tolerant': 25,
+    'error correction': 20,
+    'error': 5,
+    'surface code': 20,
+    'code': 10, 
+    'circuit': 15,
+    'quantum computing': 15,
     'computer': 15, 
-    'computers': 15, 
-    'computation': 15, 
-    'computations': 15,
     'lower': 5,
-    'distilation': 4,
+    'distillation': 4,
     'threshold': 6, 
-    'cluster': 6, 
-    'state': 5, 
-    'rate': 3,
-    'cnot': 15,
-    'rates': 3,
-    'classical': 6, 
-    'processing': 6, 
-    'trapped': 3, 
-    'ion': 1,
+    'cluster state': 15,
+    'error rate': 10,
+    'classical processing': 15,
+    'ion trap': 10,
     'scalability': 8, 
     'scalable': 8, 
-    'stabilizers': 15,
-    'stabilizer': 15,
-    'stablizer': 15,
-    'stablizers': 15,
-    'minimum-weight': 25,
-    'minimum': 6,
-    'weight': 6,
-    'perfect': 6,
-    'matching': 10,
+    'stabiliser': 15,
+    'minimum weight': 25,
+    'perfect matching': 25,
+    'gate': 10,
+    'cnot': 15,
     'shor': 20, 
-    'shor\'s': 20,
     'pauli': 20,
-    'clifford': 20, 
+    'clifford': 20,
+    'toffoli': 20,
     'grover': 20, 
     'algorithm': 20,
-    'algorithms': 20,
-    'quantum': 4,
-    'qubits': 5, 
-    'logical': 7, 
     'hadamard': 10, 
     'unitary': 5,
-    'cnot': 10, 
-    'gate': 10,
-    'gates': 10,
-    'nearest': 7, 
-    'neighbour': 7, 
-    'neighbor': 7,
-    'nearest-neighbour': 7, 
-    'nearest-neighbor': 7, 
+    'logical qubit': 15,
+    'logical': 7,
+    'nearest neighbour': 15, 
+    'nearest neighbor': 15, 
 }
 
+import re
+import nltk
+from nltk.tokenize import wordpunct_tokenize
+from nltk.stem.lancaster import LancasterStemmer
+
+st = LancasterStemmer()
+
+def clean(text):
+    # Remove hyphens
+    text = re.sub(r'[\']', '', text)
+    # Replace non-whitespace, non-alphanumeric characters with spaces
+    return re.sub(r'[^\w\s]+', ' ', text)
+
+def tokenize(text):    
+    # Tokenize the text, then stem each word
+    return [st.stem(x) for x in wordpunct_tokenize(clean(text))]
+
+def find_keyword(word, text):
+    word = tokenize(clean(word))
+    ngrams = nltk.ngrams(text, len(word))
+
+    return tuple(word) in ngrams
+
+def find_keywords(text):
+    return sum([score for word, score in KEYWORDS.iteritems() 
+        if find_keyword(word, text)])
+
 def score(title, abstract):
-    ttitle = sum([KEYWORDS.get(w, 0) for w in title.lower().strip().split()])
-    aabstract = sum([KEYWORDS.get(w, 0) for w in abstract.lower().split()])
-    
+    tt = tokenize(title)
+    aa = tokenize(abstract)
+
+    ttitle = find_keywords(tt)
+    aabstract = find_keywords(aa)
+
     return ttitle * 1.5 + aabstract
