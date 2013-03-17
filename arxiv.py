@@ -26,11 +26,12 @@ Options:
 """
 
 import os
+import time
 from docopt import docopt
 args = docopt(__doc__, version='arXiv Search v1.0')
 
 from score import score
-from arxivsearch import arXivSearch
+from pyarxiv.arxiv import arXiv
 from pybibdesk.bibdesk import BibDesk
 
 # Whether or not you use BibDesk to handle your references (will automatically
@@ -55,7 +56,7 @@ OUTPUT_FORMAT = "{i:<6} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{m
 # Start the arXiv search
 #
 
-arxiv = arXivSearch(DEFAULT_CATEGORIES, DEFAULT_LIMIT, INC_ABSTRACT, USE_BIBDESK)
+arxiv = arXiv(DEFAULT_CATEGORIES, DEFAULT_LIMIT, INC_ABSTRACT, USE_BIBDESK)
 
 # Retrieve and parse the query from arXiv
 if args['<arxiv_id>']:
