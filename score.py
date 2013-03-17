@@ -59,10 +59,9 @@ def tokenize(text):
     return [st.stem(x) for x in wordpunct_tokenize(clean(text))]
 
 def find_keyword(word, text):
-    word = tokenize(clean(word))
+    word = tuple(tokenize(word))
     ngrams = nltk.ngrams(text, len(word))
-
-    return tuple(word) in ngrams
+    return word in ngrams
 
 def find_keywords(text):
     return sum([score for word, score in KEYWORDS.iteritems() 
