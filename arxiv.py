@@ -21,7 +21,7 @@ Options:
   --author=<author>             The author to restrict searches to
   --limit=<limit>               The maximum number of results to retrieve
   --score=<score>               The score cutoff for the display of papers [default: 0]
-  --period=<period>             The time period to retrieve results from quant-ph  
+  --period=<period>             The days into the past to retrieve results for  
   --abstract                    Will print out the abstract for each matching result
 """
 
