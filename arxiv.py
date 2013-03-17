@@ -105,7 +105,7 @@ for (i, (a, key_score)) in enumerate(articles):
     else:
         mark = " ** " if a['primary'] not in DEFAULT_CATEGORIES else ""
         print OUTPUT_FORMAT.format(**{
-            'i':          i,
+            'i':          (i+1),
             'mark':       mark,
             'cate':       a['primary'],
             'score':      key_score,
