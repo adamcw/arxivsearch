@@ -4,3 +4,6 @@
 [submodule "pybibdesk"]
 	path = pybibdesk
 	url = git@github.com:adamcw/pybibdesk.git
+[submodule "pyarxiv"]
+	path = pyarxiv
+	url = git@github.com:adamcw/pyarxiv.git
