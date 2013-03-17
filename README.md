@@ -12,6 +12,11 @@ Only tested on OSX 10.8 with the following dependent packages:
     pip install feedparser
     pip install docopt
 
+## Installation ##
+
+* Update the options at the top of arxiv.py to suit your preferences (See: Options)
+* Update score.py to include keyword, weight values for your own preferences
+
 ## Usage ##
 
     arXiv Search
@@ -37,3 +42,30 @@ Only tested on OSX 10.8 with the following dependent packages:
     --period=<period>             The days into the past to retrieve results for 
     --abstract                    Will print out the abstract for each matching result
 
+## Options ##
+
+    # Whether or not you use BibDesk to handle your references (will automatically
+    # export BibTex references into the currently open BibDesk bilbiography)
+    USE_BIBDESK = True
+
+    # Whether or not to include the abstract in exported BibTex references
+    INC_ABSTRACT = True
+
+    # The default categories to search if no other categories are specified
+    DEFAULT_CATEGORIES = ['quant-ph']
+
+    # The number of results to return if no number is specified
+    DEFAULT_LIMIT = 100
+
+    # Named aliases to search for specific time ranges when using --period
+    YESTERDAY = ["yesterday", "yday", "y"]
+    LAST_WEEK = ["last week", "lastweek", "lweek", "lw", "w"]
+    LAST_MONTH = ["last month", "lastmonth", "lmonth", "lm", "m"]
+
+    # A Python .format() string representing how results will be formatted
+    OUTPUT_FORMAT = "{i:<6} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}"
+
+## Future Prospects ## 
+
+* Automatically generate scoring keywords and weights based on a provided .bib file of references. 
+* Improve and de-hackify the arXiv journal_ref parsing

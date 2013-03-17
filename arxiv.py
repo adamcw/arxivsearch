@@ -51,7 +51,7 @@ DEFAULT_CATEGORIES = ['quant-ph']
 # The number of results to return if no number is specified
 DEFAULT_LIMIT = 100
 
-# Named aliases to search for specific time ranges when using "new"
+# Named aliases to search for specific time ranges when using --period
 YESTERDAY = ["yesterday", "yday", "y"]
 LAST_WEEK = ["last week", "lastweek", "lweek", "lw", "w"]
 LAST_MONTH = ["last month", "lastmonth", "lmonth", "lm", "m"]
