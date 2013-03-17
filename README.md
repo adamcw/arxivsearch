@@ -65,7 +65,7 @@ Only tested on OSX 10.8 with the following dependent packages:
     # A Python .format() string representing how results will be formatted
     OUTPUT_FORMAT = "{i:<6} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}"
 
-## Future Prospects ## 
+## Future Prospects ##
 
 * Automatically generate scoring keywords and weights based on a provided .bib file of references. 
 * Improve and de-hackify the arXiv journal_ref parsing
