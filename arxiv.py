@@ -5,7 +5,7 @@
 
 Usage:
   arxiv.py id <arxiv_id> [--abstract] [--bib | --url | --pdf]
-  arxiv.py search <query> [--author=<author>] [--category=<category>] [--period=<period>] [--limit=<limit>] [--score=<score>] [--abstract] [--bib | --url | --pdf]
+  arxiv.py search [-q=<query> | --query=<query>] [--author=<author>] [--category=<category>] [--period=<period>] [--limit=<limit>] [--score=<score>] [--abstract] [--bib | --url | --pdf]
   arxiv.py new [--author=<author>] [--category=<category>] [--period=<period>] [--limit=<limit>] [--score=<score>] [--abstract] [--bib | --url | --pdf]
   arxiv.py bib <arxiv_id>
   arxiv.py url <arxiv_id>
@@ -41,12 +41,15 @@ arxiv = arXiv(DEFAULT_CATEGORIES, DEFAULT_LIMIT, INC_ABSTRACT, USE_BIBDESK)
 if args['<arxiv_id>']:
     r = arxiv.get_id(args['<arxiv_id>'])
 else:
+    if args['new'] and not args['--period']:
+        args['--period'] = 0
+
     r = arxiv.search(**{
-        'query':    args['<query>'],
+        'query':    args['-q'] or args['--query'],
         'period':   args['--period'],
         'author':   args['--author'], 
         'category': args['--category'],
-        'limit':  args['--limit']
+        'limit':    args['--limit']
     })
 
 # Order articles by default category or not, then by date published
