@@ -16,8 +16,7 @@ Only tested on OSX 10.8 with the following dependent packages:
 
 ## Installation ##
 
-* Update the options at the top of arxiv.py to suit your preferences (See: Options)
-* Update score.py to include keyword, weight values for your own preferences
+* Update the options at the top of config.py to suit your preferences (See: Options)
 
 ## Usage ##
 
@@ -44,7 +43,7 @@ Only tested on OSX 10.8 with the following dependent packages:
     --period=<period>             The days into the past to retrieve results for 
     --abstract                    Will print out the abstract for each matching result
 
-## Options (arxiv.py) ##
+## Options (config.py) ##
 
     # Whether or not you use BibDesk to handle your references (will automatically
     # export BibTex references into the currently open BibDesk bilbiography)
@@ -59,15 +58,23 @@ Only tested on OSX 10.8 with the following dependent packages:
     # The number of results to return if no number is specified
     DEFAULT_LIMIT = 100
 
+    # The software to use to 'open' a URL. Try "open" for OSX, "gnome-open" for
+    # Linux or "cmd /c start" for Windows. Commands for your specific setup may
+    # need to be determined.
+    OPEN_SOFTWARE = "open"
+
     # A Python .format() string representing how results will be formatted
     OUTPUT_FORMAT = "{i:<6} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}"
 
-## Search Options (arxivsearch.py) ##
-
-    # Named aliases to search for specific time ranges when using --period
-    YESTERDAY = ["yesterday", "yday", "y"]
-    LAST_WEEK = ["last week", "lastweek", "lweek", "lw", "w"]
-    LAST_MONTH = ["last month", "lastmonth", "lmonth", "lm", "m"]
+    # Keywords for scoring purposes. Keyword/Phrase: Score.
+    KEYWORDS = {
+        'topological': 10, 
+        'qubit': 5, 
+        'qec': 20,
+        'fault tolerant': 25,
+        'error correction': 20,
+        'error': 5,
+    }
 
 ## Future Prospects ##
 
