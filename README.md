@@ -51,16 +51,16 @@ Only tested on OSX 10.8 with the following dependent packages:
     # The default categories to search if no other categories are specified
     DEFAULT_CATEGORIES = ['quant-ph']
 
-    # A Python .format() string representing how results will be formatted
-    OUTPUT_FORMAT = "{i:<6} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}"
-
-## Search Options (arxivsearch.py) ##
-
     # Whether or not to include the abstract in exported BibTex references
     INC_ABSTRACT = True
 
     # The number of results to return if no number is specified
     DEFAULT_LIMIT = 100
+
+    # A Python .format() string representing how results will be formatted
+    OUTPUT_FORMAT = "{i:<6} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}"
+
+## Search Options (arxivsearch.py) ##
 
     # Named aliases to search for specific time ranges when using --period
     YESTERDAY = ["yesterday", "yday", "y"]
