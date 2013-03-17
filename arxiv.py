@@ -34,7 +34,6 @@ import feedparser
 from docopt import docopt
 from datetime import datetime as dt, timedelta as td
     
-import optr
 import pybibtex.bibtex as bibtex
 from pybibdesk.bibdesk import BibDesk
 from score import score

@@ -1,3 +1,17 @@
+## Tested ##
+
+Only tested on OSX 10.8 with the following dependant packages:
+
+* requests v0.14.1
+* feedparser v5.1.3
+* docopt v0.6.1
+
+## Dependancies ##
+
+    pip install requests
+    pip install feedparser
+    pip install docopt
+
 ## Usage ##
 
     arXiv Search
