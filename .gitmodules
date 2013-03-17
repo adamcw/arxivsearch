@@ -1,0 +1,3 @@
+[submodule "pybibtex"]
+	path = pybibtex
+	url = git@github.com:adamcw/pybibtex.git
