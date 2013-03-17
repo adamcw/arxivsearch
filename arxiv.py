@@ -30,31 +30,10 @@ import time
 from docopt import docopt
 args = docopt(__doc__, version='arXiv Search v1.0')
 
+from config import *
 from score import score
 from pyarxiv.arxiv import arXiv
 from pybibdesk.bibdesk import BibDesk
-
-# Whether or not you use BibDesk to handle your references (will automatically
-# export BibTex references into the currently open BibDesk bilbiography)
-USE_BIBDESK = True
-
-# The default categories to search if no other categories are specified
-DEFAULT_CATEGORIES = ['quant-ph']
-
-# Whether or not to include the abstract in exported BibTex references
-INC_ABSTRACT = True
-
-# The number of results to return if no number is specified
-DEFAULT_LIMIT = 100
-
-# A Python .format() string representing how results will be formatted
-OUTPUT_FORMAT = "{i:<6} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}"
-
-
-
-#
-# Start the arXiv search
-#
 
 arxiv = arXiv(DEFAULT_CATEGORIES, DEFAULT_LIMIT, INC_ABSTRACT, USE_BIBDESK)
 
@@ -95,11 +74,11 @@ for (i, (a, key_score)) in enumerate(articles):
             
     # Open arXiv Link
     elif args['url'] or args['--url']:
-        os.system("open {0}".format(a['page_link']))
+        os.system("{0} {1}".format(OPEN_SOFTWARE, a['page_link']))
 
     # Open PDF Link
     elif args['pdf'] or args['--pdf']:
-        os.system("open {0}".format(a['pdf_link']))
+        os.system("{0} {1}".format(OPEN_SOFTWARE, a['pdf_link']))
 
     # Output formatted result
     else:
