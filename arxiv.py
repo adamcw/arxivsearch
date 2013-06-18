@@ -33,7 +33,6 @@ args = docopt(__doc__, version='arXiv Search v1.0')
 from config import *
 from score import score
 from pyarxiv.arxiv import arXiv
-from pybibdesk.bibdesk import BibDesk
 
 arxiv = arXiv(DEFAULT_CATEGORIES, DEFAULT_LIMIT, INC_ABSTRACT, USE_BIBDESK)
 
@@ -64,6 +63,7 @@ print "Showing: {0} of {1} retrieved results. Total results: {2}".format(
     len(articles), len(r['articles']), r['total_results'])
 
 if USE_BIBDESK:
+    from pybibdesk.bibdesk import BibDesk
     bibdesk = BibDesk()
 
 for (i, (a, key_score)) in enumerate(articles):
