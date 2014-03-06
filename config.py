@@ -17,7 +17,8 @@ DEFAULT_LIMIT = 100
 OPEN_SOFTWARE = "open"
 
 # A Python .format() string representing how results will be formatted
-OUTPUT_FORMAT = "{i:<6} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}"
+OUTPUT_FORMAT = "{i:>3} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}"
+OUTPUT_FORMAT_AUTHS = "{i:<3} {date} ({arxiv_id}) | {score} | {cate} | {mark}{title}{mark}\n\t{author}"
 
 # Keywords to look for in titles and abstracts, used for scoring articles
 KEYWORDS = {

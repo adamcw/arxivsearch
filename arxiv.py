@@ -4,18 +4,20 @@
 """arXiv Search
 
 Usage:
-  arxiv.py id <arxiv_id> [--abstract] [--bib | --url | --pdf]
+  arxiv.py id <arxiv_id> [--abstract] [--bib | --url | --pdf | --dl]
   arxiv.py search [-q=<query> | --query=<query>] [--author=<author>] [--category=<category>] [--period=<period>] [--limit=<limit>] [--score=<score>] [--abstract] [--bib | --url | --pdf]
   arxiv.py new [--author=<author>] [--category=<category>] [--period=<period>] [--limit=<limit>] [--score=<score>] [--abstract] [--bib | --url | --pdf]
   arxiv.py bib <arxiv_id>
   arxiv.py url <arxiv_id>
   arxiv.py pdf <arxiv_id>
+  arxiv.py dl <arxiv_id>
 
 Options:
   arxiv_id                      The ID of an arXiv paper 
   query                         A query string to search arXiv
   url, --url                    Opens the following arXiv id as a URL
   pdf, --pdf                    Opens the following arXiv id as a PDF
+  dl, -dl                       Downloads the following arXiv id as PDF
   bib, --bib                    Will print out bibtex entry for each matching result
   --category=<category>         The category to restrict searches to
   --author=<author>             The author to restrict searches to
@@ -27,6 +29,7 @@ Options:
 
 import os
 import time
+import urllib2
 from docopt import docopt
 args = docopt(__doc__, version='arXiv Search v1.0')
 
@@ -35,6 +38,8 @@ from score import score
 from pyarxiv.arxiv import arXiv
 
 arxiv = arXiv(DEFAULT_CATEGORIES, DEFAULT_LIMIT, INC_ABSTRACT, USE_BIBDESK)
+
+MIRROR = 'jp'
 
 # Retrieve and parse the query from arXiv
 if args['<arxiv_id>']:
@@ -65,6 +70,7 @@ print "Showing: {0} of {1} retrieved results. Total results: {2}".format(
 if USE_BIBDESK:
     from pybibdesk.bibdesk import BibDesk
     bibdesk = BibDesk()
+    current_authors = bibdesk.find_authors()
 
 for (i, (a, key_score)) in enumerate(articles):
     # Output BibTeX references (and import into BibDesk if in use)
@@ -83,19 +89,61 @@ for (i, (a, key_score)) in enumerate(articles):
     elif args['pdf'] or args['--pdf']:
         os.system("{0} {1}".format(OPEN_SOFTWARE, a['pdf_link']))
 
+    elif args['dl'] or args['--dl']:
+        if a['pdf_link'][-4:] != ".pdf":
+            a['pdf_link'] += ".pdf"
+
+        filename = os.path.basename(a['pdf_link'])
+        url = "http://{}.arxiv.org/pdf/{}.pdf".format(MIRROR, a['id'])
+        print "Downloading: {} --> {}".format(
+            url,
+            filename
+        )
+
+        f = open(filename, 'w');
+        page = urllib2.urlopen(url).read()
+        f.write(page)
+        f.close()
+
+        if USE_BIBDESK:
+            ref = bibdesk.find_arxiv_ref(a['id'])
+            if not ref:
+                print "Importing reference."
+                ref = bibdesk.import_reference(arxiv.format_bibtex(a))
+            bibdesk.link_pdf(ref, filename)
+        print "Done."
+
     # Output formatted result
     else:
         mark = " ** " if a['primary'] not in DEFAULT_CATEGORIES else ""
-        print OUTPUT_FORMAT.format(**{
+
+        highlight_auths = False
+        if USE_BIBDESK:
+            auths = []
+            for x in a['authors'].split(" and "):
+                if x in current_authors:
+                    highlight_auths = True
+                    auths.append("\033[1;31m{}\033[0m".format(x))
+                    key_score *= 1.1
+                else:
+                    auths.append(x)
+            a['authors'] = " and ".join(auths)
+
+        d = {
             'i':          (i+1),
             'mark':       mark,
             'cate':       a['primary'],
-            'score':      key_score,
+            'score':      round(key_score, 2),
             'date':       time.strftime("%Y-%m-%d", a['published']),
             'arxiv_id':   a['id'],
             'title':      arxiv.clean(a['title']),
             'author':     a['authors'],
-        })
+        }
+
+        if highlight_auths:
+            print OUTPUT_FORMAT_AUTHS.format(**d)
+        else:
+            print OUTPUT_FORMAT.format(**d)
 
         if args['--abstract']:
             print "\n", a['abstract'], "\n"
